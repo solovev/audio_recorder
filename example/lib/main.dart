@@ -80,6 +80,8 @@ class AppBodyState extends State<AppBody> {
 
   _start() async {
     try {
+      print(await AudioRecorder.requestPermissions);
+
       if (await AudioRecorder.hasPermissions) {
         if (_controller.text != null && _controller.text != "") {
           String path = _controller.text;
