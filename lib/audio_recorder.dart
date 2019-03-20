@@ -62,13 +62,23 @@ class AudioRecorder {
   }
 
   static Future<bool> get hasPermissions async {
-    bool hasPermission = await _channel.invokeMethod('hasPermissions');
-    return hasPermission;
+    bool hasPermission;
+    
+    try {
+      hasPermission = await _channel.invokeMethod('hasPermissions');
+    } catch (e) {}
+
+    return hasPermission ?? false;
   }
 
   static Future<bool> get requestPermissions async {
-    bool hasPermission = await _channel.invokeMethod('requestPermissions');
-    return hasPermission;
+    bool hasPermission;
+
+    try {
+      hasPermission = await _channel.invokeMethod('requestPermissions');
+    } catch (e) {}
+
+    return hasPermission ?? false;
   }
 
   static AudioOutputFormat _convertStringInAudioOutputFormat(String extension) {
