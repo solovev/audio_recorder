@@ -62,6 +62,32 @@ public class SwiftAudioRecorderPlugin: NSObject, FlutterPlugin, AVAudioRecorderD
         case "isRecording":
             print("isRecording")
             result(isRecording)
+        case "requestPermissions":
+            print("requestPermissions")
+            switch AVAudioSession.sharedInstance().recordPermission() {
+            case AVAudioSessionRecordPermission.granted:
+                NSLog("granted")
+                result(true)
+                break
+            case AVAudioSessionRecordPermission.denied:
+                NSLog("denied")
+                result(false)
+                break
+            case AVAudioSessionRecordPermission.undetermined:
+                NSLog("undetermined")
+                AVAudioSession.sharedInstance().requestRecordPermission() { [unowned self] allowed in
+                    DispatchQueue.main.async {
+                        if allowed {
+                            result(true)
+                        } else {
+                            result(false)
+                        }
+                    }
+                }
+                break
+            default:
+                break
+            }
         case "hasPermissions":
             print("hasPermissions")
             switch AVAudioSession.sharedInstance().recordPermission() {
@@ -75,15 +101,7 @@ public class SwiftAudioRecorderPlugin: NSObject, FlutterPlugin, AVAudioRecorderD
                 break
             case AVAudioSessionRecordPermission.undetermined:
                 NSLog("undetermined")
-                AVAudioSession.sharedInstance().requestRecordPermission() { [unowned self] allowed in
-                    DispatchQueue.main.async {
-                        if allowed {
-                            self.hasPermissions = true
-                        } else {
-                            self.hasPermissions = false
-                        }
-                    }
-                }
+                hasPermissions = false
                 break
             default:
                 break
@@ -103,4 +121,3 @@ public class SwiftAudioRecorderPlugin: NSObject, FlutterPlugin, AVAudioRecorderD
             }
         }
     }
-
