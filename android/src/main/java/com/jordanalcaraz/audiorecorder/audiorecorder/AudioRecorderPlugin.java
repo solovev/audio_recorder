@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 import java.io.IOException;
@@ -13,8 +14,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
@@ -125,7 +124,7 @@ public class AudioRecorderPlugin implements MethodCallHandler, PluginRegistry.Re
   }
 
   private boolean hasPermissions(final Activity activity) {
-    return ContextCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO)
+    return ActivityCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO)
             == PackageManager.PERMISSION_GRANTED;
   }
 
