@@ -87,49 +87,10 @@ public class AudioRecorderPlugin implements MethodCallHandler, PluginRegistry.Re
         Log.d(LOG_TAG, "Call isRecording");
         result.success(isRecording);
         break;
-      case "requestPermissions": {
-        Log.d(LOG_TAG, "Call requestPermissions");
-
-        if (registrar.activity() == null) {
-          result.error("no_activity", "audio_recorder plugin requires a foreground activity.", null);
-          break;
-        }
-
-        final boolean hasPermissions = this.hasPermissions(registrar.activity());
-        if (hasPermissions) {
-          result.success(true);
-          break;
-        }
-
-        setPendingMethodCallAndResult(call, result);
-        requestPermissions(registrar.activity());
-        break;
-      }
-      case "hasPermissions": {
-        Log.d(LOG_TAG, "Call hasPermissions");
-
-        if (registrar.activity() == null) {
-          result.error("no_activity", "audio_recorder plugin requires a foreground activity.", null);
-          break;
-        }
-
-        final boolean hasPermissions = this.hasPermissions(registrar.activity());
-        result.success(hasPermissions);
-        break;
-      }
       default:
         result.notImplemented();
         break;
     }
-  }
-
-  private boolean hasPermissions(final Activity activity) {
-    return ActivityCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO)
-            == PackageManager.PERMISSION_GRANTED;
-  }
-
-  private void requestPermissions(final Activity activity) {
-    ActivityCompat.requestPermissions(activity, new String[] {Manifest.permission.RECORD_AUDIO}, REQUEST_RECORD_AUDIO_PERMISSION);
   }
 
   private void startRecording() {

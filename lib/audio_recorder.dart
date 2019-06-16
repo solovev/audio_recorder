@@ -61,26 +61,6 @@ class AudioRecorder {
     return isRecording;
   }
 
-  static Future<bool> get hasPermissions async {
-    bool hasPermission;
-    
-    try {
-      hasPermission = await _channel.invokeMethod('hasPermissions');
-    } catch (e) {}
-
-    return hasPermission ?? false;
-  }
-
-  static Future<bool> get requestPermissions async {
-    bool hasPermission;
-
-    try {
-      hasPermission = await _channel.invokeMethod('requestPermissions');
-    } catch (e) {}
-
-    return hasPermission ?? false;
-  }
-
   static AudioOutputFormat _convertStringInAudioOutputFormat(String extension) {
     switch (extension) {
       case ".mp4":
